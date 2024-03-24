@@ -22,7 +22,7 @@ let package = Package(
         ),
         .testTarget(
             name: "ValilocTests",
-            dependencies: ["Valiloc", "Benchmark"]
-        ),
+            dependencies: ["Valiloc"]
+        )
     ]
 )

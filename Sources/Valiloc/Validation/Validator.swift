@@ -5,27 +5,11 @@
 //  Created by Pfriedrix on 11.03.2024.
 //
 
-import SwiftUI
-
-
-
 public protocol Validator {
     associatedtype Body: Validator
     func validate() -> Bool
     
     @ValidatorBuilder var body: Body { get }
-}
-
-extension Validator where Body == Never {
-    public var body: Body {
-        fatalError(
-          """
-          '\(Self.self)' has no body. …
-
-          Do not try to access a validaot's 'body' property directly, as it may not exist.
-          """
-        )
-    }
 }
 
 extension Never: Validator {
@@ -47,3 +31,59 @@ extension Validator where Body: Validator {
     }
 }
 
+extension ConditionValidator where Self: Validator {
+    public var body: Never { fatalError(
+                  """
+                  '\(Self.self)' has no body. …
+                  
+                  Do not try to access a validator's 'body' property directly, as it may not exist.
+                  """
+    )
+    }
+}
+
+extension RangeValidator where Self: Validator {
+    public var body: Never { fatalError(
+                  """
+                  '\(Self.self)' has no body. …
+                  
+                  Do not try to access a validator's 'body' property directly, as it may not exist.
+                  """
+    )
+    }
+}
+
+extension TupleValidator where Self: Validator {
+    public var body: Never { fatalError(
+                  """
+                  '\(Self.self)' has no body. …
+                  
+                  Do not try to access a validator's 'body' property directly, as it may not exist.
+                  """
+    )
+    }
+}
+
+extension EmptyValidator {
+    public var body: Never {
+        fatalError(
+                  """
+                  '\(Self.self)' has no body. …
+                  
+                  Do not try to access a validator's 'body' property directly, as it may not exist.
+                  """
+        )
+    }
+}
+
+extension Optional where Self: Validator {
+    public var body: Never {
+        fatalError(
+                  """
+                  '\(Self.self)' has no body. …
+                  
+                  Do not try to access a validator's 'body' property directly, as it may not exist.
+                  """
+        )
+    }
+}

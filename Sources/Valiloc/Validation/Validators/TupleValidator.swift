@@ -6,6 +6,8 @@
 //
 
 @frozen public struct TupleValidator<V>: Validator {
+    public typealias Body = Never
+    
     public var value: V
     public init(value: V) {
         self.value = value
