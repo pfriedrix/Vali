@@ -5,9 +5,14 @@
 //  Created by Pfriedrix on 11.03.2024.
 //
 
-public struct Coordinate {
+public struct Coordinate: Codable {
     var latitude: Distance
     var longitude: Distance
+    
+    public init(latitude: Distance, longitude: Distance) {
+        self.latitude = latitude
+        self.longitude = longitude
+    }
 }
 
 public extension Coordinate {

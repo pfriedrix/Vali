@@ -5,12 +5,15 @@
 //  Created by Pfriedrix on 11.03.2024.
 //
 
+import SwiftUI
+
+
+
 public protocol Validator {
-    associatedtype Body
-    
+    associatedtype Body: Validator
     func validate() -> Bool
     
-    @ValidatorBuilder var body: Self.Body { get }
+    @ValidatorBuilder var body: Body { get }
 }
 
 extension Validator where Body == Never {
@@ -25,8 +28,22 @@ extension Validator where Body == Never {
     }
 }
 
+extension Never: Validator {
+    public typealias Body = Never
+    public var body: Never {
+        fatalError()
+    }
+}
+
+extension Validator where Body == Never {
+    public func validate() -> Bool {
+        true
+    }
+}
+
 extension Validator where Body: Validator {
     public func validate() -> Bool {
         body.validate()
     }
 }
+

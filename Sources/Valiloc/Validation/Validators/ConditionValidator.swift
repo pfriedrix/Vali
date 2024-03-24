@@ -22,4 +22,6 @@
         }
         return true
     }
+    
+    public typealias Body = Never
 }

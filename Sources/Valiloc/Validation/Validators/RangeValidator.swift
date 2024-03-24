@@ -6,6 +6,8 @@
 //
 
 @frozen public struct RangeValidator<Data: Comparable, Range: RangeExpression>: Validator where Range.Bound == Data {
+    public typealias Body = Never
+    
     private let range: Range
     private let data: Data
 
@@ -18,3 +20,4 @@
         range.contains(data)
     }
 }
+

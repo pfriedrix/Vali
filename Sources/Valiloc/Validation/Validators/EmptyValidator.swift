@@ -6,7 +6,5 @@
 //
 
 @frozen public struct EmptyValidator: Validator {
-    public func validate() -> Bool {
-        return true
-    }
+    public typealias Body = Never
 }
