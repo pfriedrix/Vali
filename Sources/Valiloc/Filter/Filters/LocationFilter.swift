@@ -7,6 +7,8 @@
 
 
 public struct LocationFilter: Filter {
+    public init() { }
+    
     public func filter(of data: [Location]) -> [Location] {
         data.filter { LocationValidator(location: $0).validate() }
     }

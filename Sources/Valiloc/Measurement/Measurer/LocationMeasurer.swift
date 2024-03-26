@@ -10,6 +10,10 @@ import Foundation
 public struct LocationMeasurer: Measurer {
     public let filter: LocationFilter
     
+    public init(filter: LocationFilter) {
+        self.filter = filter
+    }
+    
     public func distance(of data: [Location], for unit: UnitLength = .meters) -> Measurement<UnitLength> {
         let locations = filter.filter(of: data)
         let distance = zip(locations, locations.dropFirst()).reduce(0) {
