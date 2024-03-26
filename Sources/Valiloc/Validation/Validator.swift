@@ -7,15 +7,21 @@
 
 public protocol Validator {
     associatedtype Body: Validator
+
     func validate() -> Bool
-    
     @ValidatorBuilder var body: Body { get }
 }
 
 extension Never: Validator {
     public typealias Body = Never
     public var body: Never {
-        fatalError()
+        fatalError(
+                  """
+                  '\(Self.self)' has no body. …
+                  
+                  Do not try to access a validator's 'body' property directly, as it may not exist.
+                  """
+        )
     }
 }
 
@@ -32,35 +38,38 @@ extension Validator where Body: Validator {
 }
 
 extension ConditionValidator where Self: Validator {
-    public var body: Never { fatalError(
+    public var body: Never {
+        fatalError(
                   """
                   '\(Self.self)' has no body. …
                   
                   Do not try to access a validator's 'body' property directly, as it may not exist.
                   """
-    )
+        )
     }
 }
 
 extension RangeValidator where Self: Validator {
-    public var body: Never { fatalError(
+    public var body: Never {
+        fatalError(
                   """
                   '\(Self.self)' has no body. …
                   
                   Do not try to access a validator's 'body' property directly, as it may not exist.
                   """
-    )
+        )
     }
 }
 
 extension TupleValidator where Self: Validator {
-    public var body: Never { fatalError(
+    public var body: Never {
+        fatalError(
                   """
                   '\(Self.self)' has no body. …
                   
                   Do not try to access a validator's 'body' property directly, as it may not exist.
                   """
-    )
+        )
     }
 }
 

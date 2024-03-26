@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  LocationTest.swift
 //
 //
 //  Created by Pfriedrix on 21.03.2024.
@@ -9,7 +9,24 @@ import XCTest
 @testable import Valiloc
 
 final class LocationTest: XCTestCase {
-
+    
+    var locationMeasurer: LocationMeasurer!
+    var mockLocations: [Location] = []
+    
+    override func setUp() {
+        super.setUp()
+        mockLocations = (try? Location.loadMocks()) ?? []
+        
+        let locationFilter = LocationFilter()
+        locationMeasurer = LocationMeasurer(filter: locationFilter)
+    }
+    
+    override func tearDown() {
+        locationMeasurer = nil
+        mockLocations = []
+        super.tearDown()
+    }
+    
     func testlocationBuildValidator() throws {
         let locations = try Location.loadMocks()
         XCTAssertFalse(locations.isEmpty)
@@ -19,41 +36,27 @@ final class LocationTest: XCTestCase {
             return result ? nil : $0
         }
         
-        print(result.first, result.count, locations.count)
+        XCTAssertFalse(result.isEmpty)
+    }
+    
+    func testDistanceCalculation() {
+        let result = locationMeasurer.distance(of: mockLocations)
+        let expectedDistance = Measurement<UnitLength>(value: 783.27, unit: .meters)
         
-        XCTAssertTrue(result.isEmpty)
+        XCTAssertEqual(result.value, expectedDistance.value, accuracy: 0.01, "The calculated distance does not match the expected value.")
     }
-}
-
-struct LocationValidator: Validator {
-    let location: Location
-    var body: some Validator {
-        Validate {
-            AccuracyValidator(accuracy: location.accuracy)
-            SpeedValidator(speed: location.speed)
-        }
-    }
-}
-
-struct AccuracyValidator: Validator {
-    let accuracy: Accuracy
     
-    var body: some Validator {
-        Validate {
-            RangeValidator(with: 0...10, for: accuracy.horizontal)
-            RangeValidator(with: 0...10, for: accuracy.vertical)
-            RangeValidator(with: 0...2, for: accuracy.speed)
-            RangeValidator(with: 0..., for: accuracy.course)
-        }
+    func testAverageSpeedCalculation() {
+        let result = locationMeasurer.averageSpeed(of: mockLocations, for: .kilometersPerHour)
+        let expectedSpeed = Measurement<UnitSpeed>(value: 5.22, unit: .kilometersPerHour)
+        
+        XCTAssertEqual(result.value, expectedSpeed.value, accuracy: 0.01, "The calculated average speed does not match the expected value.")
     }
-}
-
-struct SpeedValidator: Validator {
-    let speed: Speed
     
-    var body: some Validator {
-        Validate {
-            RangeValidator(with: 1...30, for: speed)
-        }
+    func testAltitudeGainCalculation() {
+        let result = locationMeasurer.altitudeGain(of: mockLocations)
+        let expectedGain = Measurement<UnitLength>(value: 4.11, unit: .meters)
+        
+        XCTAssertEqual(result.value, expectedGain.value, accuracy: 0.01, "The calculated altitude gain does not match the expected value.")
     }
 }
