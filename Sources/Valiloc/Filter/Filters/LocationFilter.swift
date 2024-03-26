@@ -12,14 +12,14 @@ public struct LocationFilter: Filter {
     }
 }
 
-struct LocationValidator: Validator {
+public struct LocationValidator: Validator {
     private let location: Location
     
     public init(location: Location) {
         self.location = location
     }
     
-    var body: some Validator {
+    public var body: some Validator {
         Validate {
             AccuracyValidator(accuracy: location.accuracy)
             SpeedValidator(speed: location.speed)
@@ -27,10 +27,14 @@ struct LocationValidator: Validator {
     }
 }
 
-struct AccuracyValidator: Validator {
+public struct AccuracyValidator: Validator {
     let accuracy: Accuracy
     
-    var body: some Validator {
+    public init(accuracy: Accuracy) {
+        self.accuracy = accuracy
+    }
+    
+    public var body: some Validator {
         Validate {
             RangeValidator(with: 0...10, for: accuracy.horizontal)
             RangeValidator(with: 0...10, for: accuracy.vertical)
@@ -40,10 +44,14 @@ struct AccuracyValidator: Validator {
     }
 }
 
-struct SpeedValidator: Validator {
+public struct SpeedValidator: Validator {
     let speed: Speed
     
-    var body: some Validator {
+    public init(speed: Speed) {
+        self.speed = speed
+    }
+    
+    public var body: some Validator {
         Validate {
             RangeValidator(with: 1...30, for: speed)
         }
