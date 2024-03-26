@@ -53,7 +53,7 @@ public typealias Direction = Double
 // MARK: - MOCKED DATA
 extension Location {
     public static func loadMocks() throws -> [Location] {
-        guard let fileURL = Bundle.module.url(forResource: "locations", withExtension: "json") else {
+        guard let fileURL = Bundle.main.url(forResource: "locations", withExtension: "json") else {
             throw NSError(domain: "no file", code: 1)
         }
         

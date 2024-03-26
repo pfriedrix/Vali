@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Valiloc",
     platforms: [
-        .iOS(.v14),
+        .iOS(.v14)
     ],
     products: [
         .library(
