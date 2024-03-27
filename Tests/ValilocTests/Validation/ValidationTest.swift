@@ -24,10 +24,10 @@ final class ValidationTest: XCTestCase {
     }
     
     func testTupleValidator() {
-        let tupleValidator = TupleValidator(value: (EmptyValidator(), RangeValidator(with: 1...10, for: 5)))
+        let tupleValidator = TupleValidator((EmptyValidator(), RangeValidator(with: 1...10, for: 5)))
         XCTAssertTrue(tupleValidator.validate(), "TupleValidator should return true if all elements validate true.")
         
-        let failingTupleValidator = TupleValidator(value: (EmptyValidator(), RangeValidator(with: 1...10, for: 11)))
+        let failingTupleValidator = TupleValidator((EmptyValidator(), RangeValidator(with: 1...10, for: 11)))
         XCTAssertFalse(failingTupleValidator.validate(), "TupleValidator should return false if any element validates false.")
     }
     
@@ -92,5 +92,4 @@ final class ValidationTest: XCTestCase {
         
         XCTAssertTrue(eitherValidator.validate(), "ValidatorBuilder should correctly handle conditional validators with ConditionValidator.")
     }
-
 }

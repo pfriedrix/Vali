@@ -9,7 +9,8 @@
     public typealias Body = Never
     
     public var value: V
-    public init(value: V) {
+
+    public init(_ value: V) {
         self.value = value
     }
     

@@ -8,7 +8,7 @@
 @frozen
 @resultBuilder
 public struct ValidatorBuilder {
-    public static func buildBlock() -> EmptyValidator {
+    public static func buildBlock() -> some Validator {
         EmptyValidator()
     }
     
@@ -17,7 +17,7 @@ public struct ValidatorBuilder {
     }
     
     public static func buildBlock<each V>(_ validator: repeat each V) -> TupleValidator<(repeat each V)> where repeat each V: Validator {
-        TupleValidator(value: (repeat each validator))
+        TupleValidator(nil ?? (repeat each validator))
     }
     
     public static func buildExpression<V: Validator>(_ validator: V) -> V {
