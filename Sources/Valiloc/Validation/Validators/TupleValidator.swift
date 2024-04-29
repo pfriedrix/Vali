@@ -5,7 +5,7 @@
 //  Created by Pfriedrix on 20.03.2024.
 //
 
-@frozen public struct TupleValidator<V>: Validator {
+public struct TupleValidator<V>: Validator {
     public typealias Body = Never
     
     public var value: V

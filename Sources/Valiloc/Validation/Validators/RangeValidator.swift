@@ -5,7 +5,7 @@
 //  Created by Pfriedrix on 20.03.2024.
 //
 
-@frozen public struct RangeValidator<Data: Comparable, Range: RangeExpression>: Validator where Range.Bound == Data {
+public struct RangeValidator<Data: Comparable, Range: RangeExpression>: Validator where Range.Bound == Data {
     public typealias Body = Never
     
     private let range: Range

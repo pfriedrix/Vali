@@ -5,7 +5,7 @@
 //  Created by Pfriedrix on 20.03.2024.
 //
 
-@frozen public struct ConditionValidator<T: Validator, F: Validator>: Validator {
+public struct ConditionValidator<T: Validator, F: Validator>: Validator {
     private let first: T?
     private let second: F?
     

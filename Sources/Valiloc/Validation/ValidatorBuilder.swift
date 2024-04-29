@@ -5,7 +5,6 @@
 //  Created by Pfriedrix on 20.03.2024.
 //
 
-@frozen
 @resultBuilder
 public struct ValidatorBuilder {
     public static func buildBlock() -> some Validator {
