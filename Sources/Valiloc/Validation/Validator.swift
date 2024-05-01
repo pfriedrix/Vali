@@ -98,7 +98,7 @@ extension Optional where Self: Validator {
 }
 
 extension GroupValidator where Self: Validator {
-    public var body: Never {
+    var body: Never {
         fatalError(
                   """
                   '\(Self.self)' has no body. …

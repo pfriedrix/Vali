@@ -12,9 +12,7 @@ public struct ForEachValidator<Data, ID, V: Validator> where Data: RandomAccessC
 
 extension ForEachValidator: Validator {
     public var body: some Validator {
-        for element in data {
-            validator(element)
-        }
+        GroupValidator(validators: data.compactMap { validator($0) })
     }
 }
 

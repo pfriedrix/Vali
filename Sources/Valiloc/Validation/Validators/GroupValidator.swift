@@ -5,7 +5,7 @@
 //  Created by Pfriedrix on 01.05.2024.
 //
 
-public struct GroupValidator<V> where V: Validator {
+struct GroupValidator<V> where V: Validator {
     let validators: [V]
 }
 

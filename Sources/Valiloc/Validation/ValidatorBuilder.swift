@@ -15,10 +15,6 @@ public struct ValidatorBuilder {
         validator
     }
     
-    public static func buildArray<V: Validator>(_ validators: [V]) -> some Validator {
-        GroupValidator(validators: validators)
-    }
-    
     public static func buildBlock<each V>(_ validator: repeat each V) -> TupleValidator<(repeat each V)> where repeat each V: Validator {
         TupleValidator(nil ?? (repeat each validator))
     }
