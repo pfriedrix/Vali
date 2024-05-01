@@ -15,14 +15,14 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Valiloc",
-            resources: [
-                .process("Mocks")
-            ]
+            name: "Valiloc"
         ),
         .testTarget(
             name: "ValilocTests",
-            dependencies: ["Valiloc"]
+            dependencies: ["Valiloc"],
+            resources: [
+                .process("Mocks")
+            ]
         )
     ]
 )

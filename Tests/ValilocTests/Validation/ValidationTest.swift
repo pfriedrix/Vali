@@ -51,17 +51,17 @@ final class ValidationTest: XCTestCase {
     }
     
     func testSingleValidatorBuilding() {
-        let validator: Validate = Validate {
-            RangeValidator(with: 1...10, for: 5)
-        }
-        
+        let validator = RangeValidator(with: 1...10, for: 5)
+
         XCTAssertTrue(validator.validate(), "ValidatorBuilder should correctly build and validate a single validator.")
     }
     
     func testMultipleValidatorsBuilding() {
-        let validator: Validate = Validate {
-            RangeValidator(with: 1...10, for: 5)
-            EmptyValidator()
+        var validator: some Validator {
+            Validate {
+                RangeValidator(with: 1...10, for: 5)
+                EmptyValidator()
+            }
         }
         
         XCTAssertTrue(validator.validate(), "ValidatorBuilder should correctly build and validate multiple validators.")
@@ -69,11 +69,11 @@ final class ValidationTest: XCTestCase {
     
     func testOptionalValidatorBuilding() {
         let optionalRangeValidator: RangeValidator<Int, ClosedRange<Int>> = RangeValidator(with: 1...10, for: 5)
-        let validator: Validate = Validate {
+        var validator: some Validator {
             if true {
                 optionalRangeValidator
             } else {
-                RangeValidator(with: 1...10, for: 5)
+                RangeValidator(with: 1...10, for: 11)
             }
         }
         
@@ -82,19 +82,23 @@ final class ValidationTest: XCTestCase {
     
     func testConditionalValidatorsBuilding() {
         let condition = true
-        let validator: Validate = Validate {
-            RangeValidator(with: 1...10, for: 5)
-            EmptyValidator()
-            if condition {
+        var validator: some Validator {
+            Validate {
                 RangeValidator(with: 1...10, for: 5)
+                EmptyValidator()
+                if condition {
+                    RangeValidator(with: 1...10, for: 5)
+                }
             }
         }
         
         XCTAssertTrue(validator.validate(), "ValidatorBuilder should correctly handle conditional validators based on a condition.")
         
-        let eitherValidator: Validate = Validate {
-            if condition {
-                RangeValidator(with: 1...10, for: 5)
+        var eitherValidator: some Validator {
+            Validate {
+                if condition {
+                    RangeValidator(with: 1...10, for: 5)
+                }
             }
         }
         

@@ -50,20 +50,6 @@ public typealias Speed = Double
  */
 public typealias Direction = Double
 
-// MARK: - MOCKED DATA
-extension Location {
-    public static func loadMocks() throws -> [Location] {
-        guard let fileURL = Bundle.main.url(forResource: "locations", withExtension: "json") else {
-            throw NSError(domain: "no file", code: 1)
-        }
-        
-        let jsonData = try Data(contentsOf: fileURL)
-        let decoder = JSONDecoder()
-        let locations = try decoder.decode([Location].self, from: jsonData)
-        return locations
-    }
-}
-
 // MARK: - CLLocation
 extension Location {
     public init(from location: CLLocation) {

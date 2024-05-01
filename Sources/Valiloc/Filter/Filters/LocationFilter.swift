@@ -22,10 +22,8 @@ public struct LocationValidator: Validator {
     }
     
     public var body: some Validator {
-        Validate {
-            AccuracyValidator(accuracy: location.accuracy)
-            SpeedValidator(speed: location.speed)
-        }
+        AccuracyValidator(accuracy: location.accuracy)
+        SpeedValidator(speed: location.speed)
     }
 }
 
@@ -37,12 +35,10 @@ public struct AccuracyValidator: Validator {
     }
     
     public var body: some Validator {
-        Validate {
-            RangeValidator(with: 0...10, for: accuracy.horizontal)
-            RangeValidator(with: 0...10, for: accuracy.vertical)
-            RangeValidator(with: 0...2, for: accuracy.speed)
-            RangeValidator(with: 0..., for: accuracy.course)
-        }
+        RangeValidator(with: 0...10, for: accuracy.horizontal)
+        RangeValidator(with: 0...10, for: accuracy.vertical)
+        RangeValidator(with: 0...2, for: accuracy.speed)
+        RangeValidator(with: 0..., for: accuracy.course)
     }
 }
 
@@ -54,8 +50,6 @@ public struct SpeedValidator: Validator {
     }
     
     public var body: some Validator {
-        Validate {
-            RangeValidator(with: 1...30, for: speed)
-        }
+        RangeValidator(with: 1...30, for: speed)
     }
 }

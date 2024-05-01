@@ -8,6 +8,22 @@
 import XCTest
 @testable import Valiloc
 
+// MARK: - MOCKED DATA
+extension Location {
+    static func loadMocks() throws -> [Location] {
+        let fileURL = Bundle.module.url(forResource: "locations", withExtension: "json")
+        guard let fileURL = fileURL else {
+            throw NSError(domain: "no file", code: 1)
+        }
+        
+        let jsonData = try Data(contentsOf: fileURL)
+        let decoder = JSONDecoder()
+        let locations = try decoder.decode([Location].self, from: jsonData)
+        return locations
+    }
+}
+
+
 final class LocationTest: XCTestCase {
     
     var locationMeasurer: LocationMeasurer!
@@ -32,8 +48,15 @@ final class LocationTest: XCTestCase {
             LocationValidator(location: location)
         }
         
-        let isValid = validator.validate()
-        XCTAssertTrue(isValid, "Not all locations passed the validation.")
+        XCTAssertFalse(validator.validate(), "Not all locations passed the validation.")
+        
+        let filtered = LocationFilter().filter(of: mockLocations)
+        
+        let filteredValidator = ForEachValidator(filtered, id: \.timestamp) { location in
+            LocationValidator(location: location)
+        }
+        
+        XCTAssertTrue(filteredValidator.validate(), "Not all locations passed the validation.")
     }
     
     func testlocationBuildValidator() throws {

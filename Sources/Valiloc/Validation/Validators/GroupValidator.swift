@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  GroupValidator.swift
 //  
 //
 //  Created by Pfriedrix on 01.05.2024.
