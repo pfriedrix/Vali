@@ -96,3 +96,15 @@ extension Optional where Self: Validator {
         )
     }
 }
+
+extension GroupValidator where Self: Validator {
+    public var body: Never {
+        fatalError(
+                  """
+                  '\(Self.self)' has no body. …
+                  
+                  Do not try to access a validator's 'body' property directly, as it may not exist.
+                  """
+        )
+    }
+}

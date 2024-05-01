@@ -27,6 +27,15 @@ final class LocationTest: XCTestCase {
         super.tearDown()
     }
     
+    func testForEachLocationValidator() {
+        let validator = ForEachValidator(mockLocations, id: \.timestamp) { location in
+            LocationValidator(location: location)
+        }
+        
+        let isValid = validator.validate()
+        XCTAssertTrue(isValid, "Not all locations passed the validation.")
+    }
+    
     func testlocationBuildValidator() throws {
         let locations = try Location.loadMocks()
         XCTAssertFalse(locations.isEmpty)

@@ -26,7 +26,7 @@ public struct Location: Codable {
 }
 
 /*
- *  CLLocationDistance
+ *  Distance
  *
  *  Discussion:
  *    Type used to represent a distance in meters.
@@ -34,7 +34,7 @@ public struct Location: Codable {
 public typealias Distance = Double
 
 /*
- *  CLLocationSpeed
+ *  Speed
  *
  *  Discussion:
  *    Type used to represent the speed in meters per second.
@@ -42,7 +42,7 @@ public typealias Distance = Double
 public typealias Speed = Double
 
 /*
- *  CLLocationDirectionAccuracy
+ *  Direction
  *
  *  Discussion:
  *    Type used to represent a direction accuracy in degrees.  The lower the value the more precise the

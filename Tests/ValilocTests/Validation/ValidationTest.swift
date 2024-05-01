@@ -1,6 +1,6 @@
 //
 //  ValidationTest.swift
-//  
+//
 //
 //  Created by Pfriedrix on 20.03.2024.
 //
@@ -9,10 +9,18 @@ import XCTest
 @testable import Valiloc
 
 final class ValidationTest: XCTestCase {
-
+    
     func testPerformanceExample() throws {
         let validator = EmptyValidator()
         XCTAssertTrue(validator.validate())
+    }
+    
+    func testGroupValidator() {
+        let groupValidator = GroupValidator(validators: [RangeValidator(with: 1...10, for: 5), RangeValidator(with: 1...10, for: 3), RangeValidator(with: 1...10, for: 9)])
+        XCTAssertTrue(groupValidator.validate(), "GroupValidator should return true if all included validators return true.")
+        
+        let failingGroupValidator = GroupValidator(validators: [RangeValidator(with: 1...10, for: 11)])
+        XCTAssertFalse(failingGroupValidator.validate(), "GroupValidator should return false if any included validator returns false.")
     }
     
     func testRangeValidator() {
@@ -49,7 +57,7 @@ final class ValidationTest: XCTestCase {
         
         XCTAssertTrue(validator.validate(), "ValidatorBuilder should correctly build and validate a single validator.")
     }
-
+    
     func testMultipleValidatorsBuilding() {
         let validator: Validate = Validate {
             RangeValidator(with: 1...10, for: 5)
@@ -91,5 +99,21 @@ final class ValidationTest: XCTestCase {
         }
         
         XCTAssertTrue(eitherValidator.validate(), "ValidatorBuilder should correctly handle conditional validators with ConditionValidator.")
+    }
+    
+    func testForEachValidator() {
+        let data = [5, 7, 10]
+        let forEachValidator = ForEachValidator(data, id: \.self) { value in
+            RangeValidator(with: 1...10, for: value)
+        }
+        
+        XCTAssertTrue(forEachValidator.validate(), "ForEachValidator should return true when all elements validate true within the range.")
+        
+        let failingData = [5, 12, 10]
+        let failingForEachValidator = ForEachValidator(failingData, id: \.self) { value in
+            RangeValidator(with: 1...10, for: value)
+        }
+        
+        XCTAssertFalse(failingForEachValidator.validate(), "ForEachValidator should return false if any element validates false (outside the range).")
     }
 }
