@@ -8,7 +8,7 @@
 public protocol Validator {
     associatedtype Body: Validator
 
-    func validate() -> Bool
+    func validate() -> Validated
     @ValidatorBuilder var body: Body { get }
 }
 
@@ -26,13 +26,13 @@ extension Never: Validator {
 }
 
 extension Validator where Body == Never {
-    public func validate() -> Bool {
-        true
+    public func validate() -> Validated {
+        .valid
     }
 }
 
 extension Validator where Body: Validator {
-    public func validate() -> Bool {
+    public func validate() -> Validated {
         body.validate()
     }
 }

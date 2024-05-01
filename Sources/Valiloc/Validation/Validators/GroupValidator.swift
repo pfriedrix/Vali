@@ -12,7 +12,16 @@ struct GroupValidator<V> where V: Validator {
 extension GroupValidator: Validator {
     typealias Body = Never
     
-    func validate() -> Bool {
-        validators.allSatisfy { $0.validate() }
+    func validate() -> Validated {
+        let errors = validators.flatMap { validator -> [Error] in
+            switch validator.validate() {
+            case .valid:
+                return []
+            case .invalid(let validationErrors):
+                return validationErrors
+            }
+        }
+        
+        return errors.isEmpty ? .valid : .invalid(errors)
     }
 }

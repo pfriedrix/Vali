@@ -14,13 +14,13 @@ struct ConditionValidator<T: Validator, F: Validator>: Validator {
         self.second = second
     }
     
-    func validate() -> Bool {
+    func validate() -> Validated {
         if let first = first {
             return first.validate()
         } else if let second = second {
             return second.validate()
         }
-        return true
+        return .valid
     }
     
     typealias Body = Never

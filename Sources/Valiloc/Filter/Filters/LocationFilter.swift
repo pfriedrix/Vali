@@ -10,13 +10,13 @@ public struct LocationFilter: Filter {
     public init() { }
     
     public func filter(of data: [Location]) -> [Location] {
-        data.filter { LocationValidator(location: $0).validate() }
+        data.filter { LocationValidator(location: $0).validate() == .valid }
     }
 }
 
 public struct LocationValidator: Validator {
     private let location: Location
-    
+
     public init(location: Location) {
         self.location = location
     }

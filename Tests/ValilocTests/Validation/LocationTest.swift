@@ -48,7 +48,7 @@ final class LocationTest: XCTestCase {
             LocationValidator(location: location)
         }
         
-        XCTAssertFalse(validator.validate(), "Not all locations passed the validation.")
+        XCTAssertFalse(validator.validate() == .valid, "Not all locations passed the validation.")
         
         let filtered = LocationFilter().filter(of: mockLocations)
         
@@ -56,7 +56,7 @@ final class LocationTest: XCTestCase {
             LocationValidator(location: location)
         }
         
-        XCTAssertTrue(filteredValidator.validate(), "Not all locations passed the validation.")
+        XCTAssertTrue(filteredValidator.validate() == .valid, "Not all locations passed the validation.")
     }
     
     func testlocationBuildValidator() throws {
@@ -65,7 +65,7 @@ final class LocationTest: XCTestCase {
         
         let result = locations.compactMap {
             let result = LocationValidator(location: $0).validate()
-            return result ? nil : $0
+            return result == .valid ? nil : $0
         }
         
         XCTAssertFalse(result.isEmpty)
