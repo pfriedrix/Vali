@@ -10,9 +10,9 @@ struct GroupValidator<V> where V: Validator {
 }
 
 extension GroupValidator: Validator {
-    public typealias Body = Never
+    typealias Body = Never
     
-    public func validate() -> Bool {
+    func validate() -> Bool {
         validators.allSatisfy { $0.validate() }
     }
 }

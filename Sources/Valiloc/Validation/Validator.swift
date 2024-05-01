@@ -38,7 +38,7 @@ extension Validator where Body: Validator {
 }
 
 extension ConditionValidator where Self: Validator {
-    public var body: Never {
+    var body: Never {
         fatalError(
                   """
                   '\(Self.self)' has no body. …
@@ -62,7 +62,7 @@ extension RangeValidator where Self: Validator {
 }
 
 extension TupleValidator where Self: Validator {
-    public var body: Never {
+    var body: Never {
         fatalError(
                   """
                   '\(Self.self)' has no body. …
