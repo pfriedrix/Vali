@@ -6,23 +6,27 @@ import PackageDescription
 let package = Package(
     name: "Valiloc",
     platforms: [
-        .iOS(.v14)
+        .iOS(.v14),
+        .macOS(.v12)
     ],
     products: [
         .library(
             name: "Valiloc",
             targets: ["Valiloc"]),
+        .executable(name: "DemoApp", targets: ["App"])
     ],
     targets: [
         .target(
-            name: "Valiloc"
+            name: "Valiloc",
+            resources: [
+                .process("Resources")
+            ]
         ),
         .testTarget(
             name: "ValilocTests",
-            dependencies: ["Valiloc"],
-            resources: [
-                .process("Mocks")
-            ]
-        )
+            dependencies: ["Valiloc"]
+        ),
+        .executableTarget(name: "App", 
+                          dependencies: ["Valiloc"])
     ]
 )

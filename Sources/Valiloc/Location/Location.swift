@@ -8,12 +8,12 @@
 import CoreLocation
 
 public struct Location: Codable {
-    var coordinate: Coordinate
-    var accuracy: Accuracy
-    var speed: Speed
-    var altitude: Distance
-    var timestamp: Date
-    var sourceInfomation: SourceInformation?
+    public var coordinate: Coordinate
+    public var accuracy: Accuracy
+    public var speed: Speed
+    public var altitude: Distance
+    public  var timestamp: Date
+    public var sourceInfomation: SourceInformation?
     
     public init(coordinate: Coordinate, accuracy: Accuracy, speed: Speed, altitude: Distance, timestamp: Date, sourceInfomation: SourceInformation? = nil) {
         self.coordinate = coordinate
@@ -104,5 +104,20 @@ extension CLLocationSourceInformation {
 extension Location {
     func distance(from location: Location) -> Distance {
         CLLocation(from: self).distance(from: CLLocation(from: location))
+    }
+}
+
+// MARK: - MOCKED DATA
+extension Location {
+    public static func loadMocks() throws -> [Location] {
+        let fileURL = Bundle.module.url(forResource: "locations", withExtension: "json")
+        guard let fileURL = fileURL else {
+            throw NSError(domain: "no file", code: 1)
+        }
+        
+        let jsonData = try Data(contentsOf: fileURL)
+        let decoder = JSONDecoder()
+        let locations = try decoder.decode([Location].self, from: jsonData)
+        return locations
     }
 }

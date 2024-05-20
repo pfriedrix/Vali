@@ -33,10 +33,10 @@ public typealias SpeedAccuracy = Double
 public typealias CoordinateAccuracy = Double
 
 public struct Accuracy: Codable {
-    let horizontal: CoordinateAccuracy
-    let vertical: CoordinateAccuracy
-    let course: DirectionAccuracy
-    let speed: SpeedAccuracy
+    public var horizontal: CoordinateAccuracy
+    public var vertical: CoordinateAccuracy
+    public var course: DirectionAccuracy
+    public var speed: SpeedAccuracy
     
     public init(horizontal: CoordinateAccuracy, vertical: CoordinateAccuracy, course: DirectionAccuracy, speed: SpeedAccuracy) {
         self.horizontal = horizontal

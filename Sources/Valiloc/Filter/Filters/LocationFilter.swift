@@ -5,7 +5,6 @@
 //  Created by Pfriedrix on 25.03.2024.
 //
 
-
 public struct LocationFilter: Filter {
     public init() { }
     

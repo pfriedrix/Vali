@@ -6,8 +6,8 @@
 //
 
 public struct Coordinate: Codable {
-    var latitude: Distance
-    var longitude: Distance
+    public var latitude: Distance
+    public var longitude: Distance
     
     public init(latitude: Distance, longitude: Distance) {
         self.latitude = latitude

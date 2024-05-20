@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct LocationMeasurer: Measurer {
-    public let filter: LocationFilter
+public struct LocationMeasurer<F: Filter>: Measurer where F.Item == Location {
+    public let filter: F
     
-    public init(filter: LocationFilter) {
+    public init(filter: F) {
         self.filter = filter
     }
     

@@ -8,25 +8,9 @@
 import XCTest
 @testable import Valiloc
 
-// MARK: - MOCKED DATA
-extension Location {
-    static func loadMocks() throws -> [Location] {
-        let fileURL = Bundle.module.url(forResource: "locations", withExtension: "json")
-        guard let fileURL = fileURL else {
-            throw NSError(domain: "no file", code: 1)
-        }
-        
-        let jsonData = try Data(contentsOf: fileURL)
-        let decoder = JSONDecoder()
-        let locations = try decoder.decode([Location].self, from: jsonData)
-        return locations
-    }
-}
-
-
 final class LocationTest: XCTestCase {
     
-    var locationMeasurer: LocationMeasurer!
+    var locationMeasurer: LocationMeasurer<LocationFilter>!
     var mockLocations: [Location] = []
     
     override func setUp() {

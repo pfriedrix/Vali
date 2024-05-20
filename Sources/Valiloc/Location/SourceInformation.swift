@@ -6,8 +6,8 @@
 //
 
 public struct SourceInformation: Codable {
-    let isPruducedByAccessory: Bool
-    let isSimulatedBySoftware: Bool
+    public let isPruducedByAccessory: Bool
+    public let isSimulatedBySoftware: Bool
     
     public init(isPruducedByAccessory: Bool, isSimulatedBySoftware: Bool) {
         self.isPruducedByAccessory = isPruducedByAccessory
