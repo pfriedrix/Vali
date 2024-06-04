@@ -12,7 +12,7 @@ public struct Location: Codable {
     public var accuracy: Accuracy
     public var speed: Speed
     public var altitude: Distance
-    public  var timestamp: Date
+    public var timestamp: Date
     public var sourceInfomation: SourceInformation?
     
     public init(coordinate: Coordinate, accuracy: Accuracy, speed: Speed, altitude: Distance, timestamp: Date, sourceInfomation: SourceInformation? = nil) {
@@ -117,7 +117,7 @@ extension Location {
         
         let jsonData = try Data(contentsOf: fileURL)
         let decoder = JSONDecoder()
-        let locations = try decoder.decode([Location].self, from: jsonData)
+        let locations = try decoder.decode([Location].self, from: jsonData).sorted { $0.timestamp < $1.timestamp }
         return locations
     }
 }

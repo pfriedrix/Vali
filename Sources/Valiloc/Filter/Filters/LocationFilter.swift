@@ -40,7 +40,7 @@ public struct AccuracyValidator: Validator {
         RangeValidator(with: 0..., for: accuracy.course)
     }
 }
-
+ 
 public struct SpeedValidator: Validator {
     let speed: Speed
     
@@ -49,6 +49,6 @@ public struct SpeedValidator: Validator {
     }
     
     public var body: some Validator {
-        RangeValidator(with: 1...30, for: speed)
+        RangeValidator(with: 1...37, for: speed)
     }
 }

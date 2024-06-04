@@ -67,19 +67,6 @@ final class ValidationTest: XCTestCase {
         XCTAssertTrue(validator.validate() == .valid, "ValidatorBuilder should correctly build and validate multiple validators.")
     }
     
-    func testOptionalValidatorBuilding() {
-        let optionalRangeValidator: RangeValidator<Int, ClosedRange<Int>> = RangeValidator(with: 1...10, for: 5)
-        var validator: some Validator {
-            if true {
-                optionalRangeValidator
-            } else {
-                RangeValidator(with: 1...10, for: 11)
-            }
-        }
-        
-        XCTAssertTrue(validator.validate() == .valid, "ValidatorBuilder should correctly handle optional validators.")
-    }
-    
     func testConditionalValidatorsBuilding() {
         let condition = true
         var validator: some Validator {
