@@ -16,7 +16,6 @@ final class KalmanFilterTests: XCTestCase {
         super.setUp()
         mockLocations = (try? Location.loadMocks()) ?? []
         
-        // Initialize the Kalman filter with the first location (if available) and reasonable noise values
         if let initialLocation = mockLocations.first {
             kalmanFilter = KalmanFilter(initial: initialLocation, processNoise: 0.01, measurementNoise: 0.1)
         }

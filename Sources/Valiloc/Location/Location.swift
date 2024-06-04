@@ -12,7 +12,7 @@ public struct Location: Codable {
     public var accuracy: Accuracy
     public var speed: Speed
     public var altitude: Distance
-    public  var timestamp: Date
+    public var timestamp: Date
     public var sourceInfomation: SourceInformation?
     
     public init(coordinate: Coordinate, accuracy: Accuracy, speed: Speed, altitude: Distance, timestamp: Date, sourceInfomation: SourceInformation? = nil) {
@@ -110,14 +110,14 @@ extension Location {
 // MARK: - MOCKED DATA
 extension Location {
     public static func loadMocks() throws -> [Location] {
-        let fileURL = Bundle.module.url(forResource: "locations", withExtension: "json")
+        let fileURL = Bundle.main.url(forResource: "locations", withExtension: "json")
         guard let fileURL = fileURL else {
             throw NSError(domain: "no file", code: 1)
         }
         
         let jsonData = try Data(contentsOf: fileURL)
         let decoder = JSONDecoder()
-        let locations = try decoder.decode([Location].self, from: jsonData)
+        let locations = try decoder.decode([Location].self, from: jsonData).sorted { $0.timestamp < $1.timestamp }
         return locations
     }
 }

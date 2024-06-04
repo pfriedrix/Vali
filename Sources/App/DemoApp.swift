@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 @main
 @available(iOS 17.0, *)
 @available(macOS 14.0, *)
