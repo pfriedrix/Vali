@@ -44,4 +44,10 @@ public struct PedometerData: Codable {
     public var averageActivePace: Double
     
     public var timestamp: TimeInterval
+    
+    public init(currentPace: Double, averageActivePace: Double, timestamp: TimeInterval) {
+        self.currentPace = currentPace
+        self.averageActivePace = averageActivePace
+        self.timestamp = timestamp
+    }
 }

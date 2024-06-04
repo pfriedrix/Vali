@@ -44,4 +44,11 @@ public struct RotationRate: Codable {
     public let z: Double
     
     public let timestamp: TimeInterval
+    
+    public init(x: Double, y: Double, z: Double, timestamp: TimeInterval) {
+        self.x = x
+        self.y = y
+        self.z = z
+        self.timestamp = timestamp
+    }
 }

@@ -36,4 +36,11 @@ public struct AltitudeData: Codable {
     public var precision: Double
     
     public let timestamp: TimeInterval
+    
+    public init(altitude: Double, accuracy: Double, precision: Double, timestamp: TimeInterval) {
+        self.altitude = altitude
+        self.accuracy = accuracy
+        self.precision = precision
+        self.timestamp = timestamp
+    }
 }
