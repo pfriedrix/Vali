@@ -12,7 +12,7 @@ public struct MotionData: Codable {
     public var rotationRate: RotationRate?
     public var pedometer: PedometerData?
     public var altitude: AltitudeData?
-    public let timestamp: TimeInterval
+    public var timestamp: TimeInterval
     
     public init(acceleration: Acceleration? = nil, rotationRate: RotationRate? = nil, pedometer: PedometerData? = nil, altitude: AltitudeData? = nil, timestamp: TimeInterval) {
         self.acceleration = acceleration
