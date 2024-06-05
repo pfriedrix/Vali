@@ -26,4 +26,9 @@ public struct Acceleration: Codable {
         self.z = z
         self.timestamp = timestamp
     }
+    
+    /// Magnitude of the acceleration vector.
+     public var magnitude: Double {
+         sqrt(x * x + y * y + z * z)
+     }
 }

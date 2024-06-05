@@ -51,4 +51,9 @@ public struct RotationRate: Codable {
         self.z = z
         self.timestamp = timestamp
     }
+    
+    /// Magnitude of the rotation rate vector.
+    public var magnitude: Double {
+        sqrt(x * x + y * y + z * z)
+    }
 }
