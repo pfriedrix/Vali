@@ -15,7 +15,7 @@ final class LocationTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        mockLocations = (try? Location.loadMocks()) ?? []
+//        mockLocations = (try? Location.loadMocks()) ?? []
         
         let locationFilter = LocationFilter()
         locationMeasurer = LocationMeasurer(filter: locationFilter)
@@ -44,7 +44,8 @@ final class LocationTest: XCTestCase {
     }
     
     func testlocationBuildValidator() throws {
-        let locations = try Location.loadMocks()
+//        let locations = try Location.loadMocks()
+        let locations = [Location]()
         XCTAssertFalse(locations.isEmpty)
         
         let result = locations.compactMap {

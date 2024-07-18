@@ -8,6 +8,21 @@
 public struct LocationFilter: Filter {
     public init() { }
     
+    public func filter<Value>(of data: [Location], for keyPath: KeyPath<Item, Value>) -> [Value] {
+        data.filter {
+            let result = LocationValidator(location: $0).validate()
+            
+            switch result {
+            case .valid:
+                return true
+            case let .invalid(errors):
+                print(errors)
+                return false
+            }
+        }
+        .map { $0[keyPath: keyPath] }
+    }
+    
     public func filter(of data: [Location]) -> [Location] {
         data.filter { LocationValidator(location: $0).validate() == .valid }
     }
@@ -27,7 +42,7 @@ public struct LocationValidator: Validator {
 }
 
 public struct AccuracyValidator: Validator {
-    let accuracy: Accuracy
+    private let accuracy: Accuracy
     
     public init(accuracy: Accuracy) {
         self.accuracy = accuracy

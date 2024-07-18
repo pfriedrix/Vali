@@ -20,19 +20,19 @@ class DimensionalKalmanFilter {
         self.k = 0.0
     }
     
-    func update(value: Double, accuracy: CoordinateAccuracy) -> Double {
-        let rValue = max(initialRValue, accuracy)
+    func update(value: Double, accuracy: Double? = nil) -> Double {
+        let rValue = accuracy ?? initialRValue
         
         p = p + qValue
         k = p / (p + rValue)
         x = x + k * (value - x)
-        p = (1 - k) * p 
+        p = (1 - k) * p
         
         return x
     }
 }
 
-public struct KalmanFilter: Filter {
+public struct LocationKalmanFilter: Filter {
     private var latitudeFilter: DimensionalKalmanFilter
     private var longitudeFilter: DimensionalKalmanFilter
     private var altitudeFilter: DimensionalKalmanFilter

@@ -33,82 +33,35 @@ public struct SensorDataSynchronizer {
     
     private func synchronizeData() -> [SynchronizedSensorData] {
         var synchronizedData: [SynchronizedSensorData] = []
-        var motionIndex = 0
-        
-        for location in locations {
-            let gpsTimestamp = location.timestamp.timeIntervalSince1970
-            
-            var left = 0
-            var right = motionData.count - 1
-            while left <= right {
-                let mid = (left + right) / 2
-                let motionTimestamp = motionData[mid].timestamp
-                if abs(motionTimestamp - gpsTimestamp) <= synchronizationTolerance {
-                    motionIndex = mid
-                    break
-                } else if motionTimestamp < gpsTimestamp {
-                    left = mid + 1
-                } else {
-                    right = mid - 1
-                }
-            }
-            
-            let motion = motionIndex < motionData.count ? motionData[motionIndex] : nil
-            if let motion = motion {
-                synchronizedData.append(SynchronizedSensorData(location: location, motion: motion))
-            } else {
-                synchronizedData.append(SynchronizedSensorData(location: location, motion: nil))
-            }
+        for (motion, location) in zip(motionData, locations) {
+            synchronizedData.append(SynchronizedSensorData(location: location, motion: motion))
         }
-        
         return synchronizedData
-    }
-    
-    // m/s
-    private func calculateSpeed(from acceleration: Acceleration?, previousAcceleration: Acceleration?) -> Double? {
-        guard let acceleration = acceleration, let previousAcceleration = previousAcceleration else {
-            return nil // Немає попередніх даних для розрахунку швидкості
-        }
-        
-        // Вираховуємо гравітацію (припускаючи, що пристрій переважно вертикальний)
-        let accelerationWithoutGravity = Acceleration(x: acceleration.x, y: acceleration.y, z: acceleration.z - 1.0, timestamp: acceleration.timestamp)
-        
-        // Інтегруємо прискорення для отримання швидкості
-        let timeInterval = acceleration.timestamp - previousAcceleration.timestamp
-        let velocityX = accelerationWithoutGravity.x * timeInterval
-        let velocityY = accelerationWithoutGravity.y * timeInterval
-        
-        let speed = sqrt(velocityX * velocityX + velocityY * velocityY)
-        
-        return speed
     }
     
     public func crossValidateAndCorrectData() -> [Location] {
         var correctedLocations: [Location] = []
         var previousLocation: Location? = nil
-        var previousAcceleration: Acceleration? = nil
         
         for synchronizedData in synchronizeData() {
             var correctedLocation = synchronizedData.location
-            
             if let motion = synchronizedData.motion {
-                let gpsWeight = 1.0 / max(correctedLocation.accuracy.horizontal, 1.0)
-                let accelerometerWeight = 0.5
-                let barometerWeight = 0.2
-                
-                if let accelerometerSpeed = calculateSpeed(from: motion.acceleration, previousAcceleration: previousAcceleration) {
-                    let gpsSpeed = correctedLocation.speed
-                    let combinedSpeed = (gpsSpeed * gpsWeight + accelerometerSpeed * accelerometerWeight) / (gpsWeight + accelerometerWeight)
-                    if abs(gpsSpeed - accelerometerSpeed) > speedTolerance {
-                        correctedLocation.speed = combinedSpeed
-                    }
+                if let pedometerSpeed = motion.pedometer?.speed {
+                    correctedLocation.speed = pedometerSpeed
                 }
                 
-                if let barAltitude = motion.altitude?.altitude {
-                    let locationAltitude = correctedLocation.altitude
-                    let combinedAltitude = (locationAltitude * gpsWeight + barAltitude * barometerWeight) / (gpsWeight + barometerWeight)
-                    if abs(locationAltitude - barAltitude) > altitudeTolerance {
-                        correctedLocation.altitude = combinedAltitude
+                if let altitude = motion.altitude {
+                    let gpsAltitude = correctedLocation.altitude
+                    let gpsAccuracy = correctedLocation.accuracy.vertical
+                    let barAccuracy = altitude.accuracy
+                    
+                    if gpsAccuracy <= altitudeTolerance && barAccuracy <= altitudeTolerance {
+                        let gpsWeight = 1.0 / gpsAccuracy
+                        let barWeight = 1.0 / barAccuracy
+                        let totalWeight = gpsWeight + barWeight
+                        correctedLocation.altitude = (gpsAltitude * gpsWeight + altitude.altitude * barWeight) / totalWeight
+                    } else if barAccuracy <= altitudeTolerance {
+                        correctedLocation.altitude = altitude.altitude
                     }
                 }
                 
@@ -120,12 +73,11 @@ public struct SensorDataSynchronizer {
                         correctedLocation.coordinate = previousLocation.coordinate
                     }
                 }
-                previousAcceleration = synchronizedData.motion?.acceleration
             }
             
             correctedLocations.append(correctedLocation)
             previousLocation = correctedLocation
-
+            
         }
         
         return correctedLocations

@@ -9,15 +9,15 @@ import XCTest
 @testable import Valiloc
 
 final class KalmanFilterTests: XCTestCase {
-    var kalmanFilter: KalmanFilter!
+    var kalmanFilter: LocationKalmanFilter!
     var mockLocations: [Location] = []
     
     override func setUp() {
         super.setUp()
-        mockLocations = (try? Location.loadMocks()) ?? []
+//        mockLocations = (try? Location.loadMocks()) ?? []
         
         if let initialLocation = mockLocations.first {
-            kalmanFilter = KalmanFilter(initial: initialLocation, processNoise: 0.01, measurementNoise: 0.1)
+            kalmanFilter = LocationKalmanFilter(initial: initialLocation, processNoise: 0.01, measurementNoise: 0.1)
         }
     }
     

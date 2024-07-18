@@ -12,15 +12,17 @@ public struct Location: Codable {
     public var accuracy: Accuracy
     public var speed: Speed
     public var altitude: Distance
-    public var timestamp: Date
+    public var timestamp: TimeInterval
+    public var course: Double
     public var sourceInfomation: SourceInformation?
     
-    public init(coordinate: Coordinate, accuracy: Accuracy, speed: Speed, altitude: Distance, timestamp: Date, sourceInfomation: SourceInformation? = nil) {
+    public init(coordinate: Coordinate, accuracy: Accuracy, speed: Speed, altitude: Distance, timestamp: TimeInterval, course: Double, sourceInfomation: SourceInformation? = nil) {
         self.coordinate = coordinate
         self.accuracy = accuracy
         self.speed = speed
         self.altitude = altitude
         self.timestamp = timestamp
+        self.course = course
         self.sourceInfomation = sourceInfomation
     }
 }
@@ -57,7 +59,8 @@ extension Location {
         self.accuracy = Accuracy(horizontal: location.horizontalAccuracy, vertical: location.verticalAccuracy, course: location.courseAccuracy, speed: location.speedAccuracy)
         self.speed = location.speed
         self.altitude = location.altitude
-        self.timestamp = location.timestamp
+        self.timestamp = location.timestamp.timeIntervalSince1970
+        self.course = location.course
         
         if #available(iOS 15.0, *) {
             self.sourceInfomation = SourceInformation(isPruducedByAccessory: location.sourceInformation?.isProducedByAccessory, isSimulatedBySoftware: location.sourceInformation?.isSimulatedBySoftware)
@@ -80,12 +83,12 @@ extension CLLocation {
  
         if #available(iOS 15.0, *) {
             guard let sourceInformation = CLLocationSourceInformation(softwareSimulationState: location.sourceInfomation?.isPruducedByAccessory, andExternalAccessoryState: location.sourceInfomation?.isSimulatedBySoftware) else {
-                self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, speed: speed, timestamp: timestamp)
+                self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, speed: speed, timestamp: Date(timeIntervalSince1970: timestamp))
                 return
             }
-            self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, courseAccuracy: courseAccuracy, speed: speed, speedAccuracy: speedAccuracy, timestamp: timestamp, sourceInfo: sourceInformation)
+            self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, courseAccuracy: courseAccuracy, speed: speed, speedAccuracy: speedAccuracy, timestamp: Date(timeIntervalSince1970: timestamp), sourceInfo: sourceInformation)
         } else {
-            self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, speed: speed, timestamp: timestamp)
+            self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, speed: speed, timestamp: Date(timeIntervalSince1970: timestamp))
         }
     }
 }
@@ -107,17 +110,3 @@ extension Location {
     }
 }
 
-// MARK: - MOCKED DATA
-extension Location {
-    public static func loadMocks() throws -> [Location] {
-        let fileURL = Bundle.main.url(forResource: "locations", withExtension: "json")
-        guard let fileURL = fileURL else {
-            throw NSError(domain: "no file", code: 1)
-        }
-        
-        let jsonData = try Data(contentsOf: fileURL)
-        let decoder = JSONDecoder()
-        let locations = try decoder.decode([Location].self, from: jsonData).sorted { $0.timestamp < $1.timestamp }
-        return locations
-    }
-}

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pfriedrix on 04.06.2024.
 //
@@ -49,5 +49,16 @@ public struct PedometerData: Codable {
         self.currentPace = currentPace
         self.averageActivePace = averageActivePace
         self.timestamp = timestamp
+    }
+    
+    /// Speed in meters per second (m/s), calculated as the inverse of currentPace.
+    public var speed: Double {
+        get {
+            if currentPace > 0 {
+                return 1.0 / currentPace
+            } else {
+                return 0.0 
+            }
+        }
     }
 }

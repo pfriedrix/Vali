@@ -7,7 +7,7 @@
 
 public enum Validated {
     case valid
-    case invalid(Array<Error>)
+    case invalid([Error])
 }
 
 extension Validated: Equatable {

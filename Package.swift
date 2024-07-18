@@ -3,8 +3,6 @@
 
 import PackageDescription
 
-import PackageDescription
-
 let package = Package(
     name: "Valiloc",
     platforms: [
@@ -15,25 +13,14 @@ let package = Package(
         .library(
             name: "Valiloc",
             targets: ["Valiloc"]
-        ),
-        .executable(
-            name: "DemoApp",
-            targets: ["App"]
         )
     ],
     targets: [
         .target(
-            name: "Valiloc",
-            resources: [
-                .process("Resources")
-            ]
+            name: "Valiloc"
         ),
         .testTarget(
             name: "ValilocTests",
-            dependencies: ["Valiloc"]
-        ),
-        .executableTarget(
-            name: "App",
             dependencies: ["Valiloc"]
         )
     ]

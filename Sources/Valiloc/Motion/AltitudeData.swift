@@ -15,7 +15,7 @@ public struct AltitudeData: Codable {
      *    The absolute altitude of the device in meters relative to sea level; could be positive or negative.
      *
      */
-    public let altitude: Double
+    public var altitude: Double
     
     /*
      *  accuracy
