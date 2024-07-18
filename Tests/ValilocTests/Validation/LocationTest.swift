@@ -10,14 +10,14 @@ import XCTest
 
 final class LocationTest: XCTestCase {
     
-    var locationMeasurer: LocationMeasurer<LocationFilter>!
+    var locationMeasurer: LocationMeasurer<Valiloc.LocationFilter>!
     var mockLocations: [Location] = []
     
     override func setUp() {
         super.setUp()
 //        mockLocations = (try? Location.loadMocks()) ?? []
         
-        let locationFilter = LocationFilter()
+        let locationFilter = Valiloc.LocationFilter()
         locationMeasurer = LocationMeasurer(filter: locationFilter)
     }
     
@@ -34,7 +34,7 @@ final class LocationTest: XCTestCase {
         
         XCTAssertFalse(validator.validate() == .valid, "Not all locations passed the validation.")
         
-        let filtered = LocationFilter().filter(of: mockLocations)
+        let filtered = Valiloc.LocationFilter().filter(of: mockLocations)
         
         let filteredValidator = ForEachValidator(filtered, id: \.timestamp) { location in
             LocationValidator(location: location)

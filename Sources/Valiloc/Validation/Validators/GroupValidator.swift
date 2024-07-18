@@ -1,6 +1,6 @@
 //
 //  GroupValidator.swift
-//  
+//
 //
 //  Created by Pfriedrix on 01.05.2024.
 //
@@ -13,15 +13,15 @@ extension GroupValidator: Validator {
     typealias Body = Never
     
     func validate() -> Validated {
-        let errors = validators.flatMap { validator -> [Error] in
+        let errors = validators.flatMap { validator -> [ValidationError] in
             switch validator.validate() {
             case .valid:
                 return []
-            case .invalid(let validationErrors):
-                return validationErrors
+            case .invalid(let compositeError):
+                return compositeError.errors
             }
         }
         
-        return errors.isEmpty ? .valid : .invalid(errors)
+        return errors.isEmpty ? .valid : .invalid(CompositeError(errors: errors))
     }
 }

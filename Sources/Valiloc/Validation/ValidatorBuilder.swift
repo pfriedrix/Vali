@@ -16,7 +16,7 @@ struct ValidatorBuilder {
     }
     
     static func buildBlock<each V>(_ validator: repeat each V) -> TupleValidator<(repeat each V)> where repeat each V: Validator {
-        TupleValidator(nil ?? (repeat each validator))
+        TupleValidator((repeat each validator))
     }
     
     static func buildExpression<V: Validator>(_ validator: V) -> V {

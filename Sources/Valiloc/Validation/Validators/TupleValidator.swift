@@ -8,24 +8,26 @@
 struct TupleValidator<V>: Validator {
     typealias Body = Never
     
-    let value: V
+    let validators: V
     
     init(_ value: V) {
-        self.value = value
+        validators = value
     }
     
     func validate() -> Validated {
-        let errors = Mirror(reflecting: value)
-            .children
-            .compactMap { $0.value as? any Validator }
-            .flatMap { validator -> [Error] in
-                switch validator.validate() {
-                case .valid:
-                    return []
-                case .invalid(let validationErrors):
-                    return validationErrors
-                }
+        var errors: [ValidationError] = []
+
+        for validator in Mirror(reflecting: validators).children.compactMap({ $0.value as? any Validator }) {
+            let validation = validator.validate()
+            if case .invalid(let error) = validation {
+                errors.append(error)
             }
-        return errors.isEmpty ? .valid : .invalid(errors)
+        }
+
+        if errors.isEmpty {
+            return .valid
+        } else {
+            return .invalid(CompositeError(errors: errors))
+        }
     }
 }

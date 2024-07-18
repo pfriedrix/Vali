@@ -12,11 +12,11 @@ public struct Location: Codable {
     public var accuracy: Accuracy
     public var speed: Speed
     public var altitude: Distance
-    public var timestamp: TimeInterval
+    public var timestamp: Date
     public var course: Double
     public var sourceInfomation: SourceInformation?
     
-    public init(coordinate: Coordinate, accuracy: Accuracy, speed: Speed, altitude: Distance, timestamp: TimeInterval, course: Double, sourceInfomation: SourceInformation? = nil) {
+    public init(coordinate: Coordinate, accuracy: Accuracy, speed: Speed, altitude: Distance, timestamp: Date, course: Double, sourceInfomation: SourceInformation? = nil) {
         self.coordinate = coordinate
         self.accuracy = accuracy
         self.speed = speed
@@ -59,7 +59,7 @@ extension Location {
         self.accuracy = Accuracy(horizontal: location.horizontalAccuracy, vertical: location.verticalAccuracy, course: location.courseAccuracy, speed: location.speedAccuracy)
         self.speed = location.speed
         self.altitude = location.altitude
-        self.timestamp = location.timestamp.timeIntervalSince1970
+        self.timestamp = location.timestamp
         self.course = location.course
         
         if #available(iOS 15.0, *) {
@@ -83,12 +83,12 @@ extension CLLocation {
  
         if #available(iOS 15.0, *) {
             guard let sourceInformation = CLLocationSourceInformation(softwareSimulationState: location.sourceInfomation?.isPruducedByAccessory, andExternalAccessoryState: location.sourceInfomation?.isSimulatedBySoftware) else {
-                self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, speed: speed, timestamp: Date(timeIntervalSince1970: timestamp))
+                self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, speed: speed, timestamp: timestamp)
                 return
             }
-            self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, courseAccuracy: courseAccuracy, speed: speed, speedAccuracy: speedAccuracy, timestamp: Date(timeIntervalSince1970: timestamp), sourceInfo: sourceInformation)
+            self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, courseAccuracy: courseAccuracy, speed: speed, speedAccuracy: speedAccuracy, timestamp: timestamp, sourceInfo: sourceInformation)
         } else {
-            self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, speed: speed, timestamp: Date(timeIntervalSince1970: timestamp))
+            self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: horizontalAccuracy, verticalAccuracy: verticalAccuracy, course: courseAccuracy, speed: speed, timestamp: timestamp)
         }
     }
 }

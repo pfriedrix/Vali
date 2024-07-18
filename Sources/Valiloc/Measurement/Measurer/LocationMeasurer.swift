@@ -15,7 +15,7 @@ public struct LocationMeasurer<F: Filter>: Measurer where F.Item == Location {
     }
     
     public func distance(of data: [Location], for unit: UnitLength = .meters) -> Measurement<UnitLength> {
-        let locations = filter.filter(of: data)
+        let locations = filter.filter(of: data, for: \.accuracy.horizontal)
         let distance = zip(locations, locations.dropFirst()).reduce(0) {
             $0 + $1.0.distance(from: $1.1)
         }
@@ -32,7 +32,7 @@ public struct LocationMeasurer<F: Filter>: Measurer where F.Item == Location {
     }
     
     public func altitudeGain(of data: [Location], for unit: UnitLength = .meters) -> Measurement<UnitLength> {
-        let locations = filter.filter(of: data)
+        let locations = filter.filter(of: data, for: \.accuracy.vertical)
         let changes = zip(locations, locations.dropFirst()).map { $1.altitude - $0.altitude }
         let netChange = changes.reduce(0, +)
         

@@ -9,19 +9,22 @@ public enum RangeError: Error {
     case rangeOut(String)
 }
 
-public struct RangeValidator<Data: Comparable, Range: RangeExpression>: Validator where Range.Bound == Data {
-    public typealias Body = Never
+public struct RangeValidator<T, Value, Range: RangeExpression>: Validator where Value: Comparable, Range.Bound == Value {
+    let range: Range
+    let value: Value
+    let keyPath: KeyPath<T, Value>
     
-    private let range: Range
-    private let data: Data
-
-    public init(with range: Range, for data: Data) {
+    public init(with range: Range, for value: Value, keyPath: KeyPath<T, Value>) {
         self.range = range
-        self.data = data
+        self.value = value
+        self.keyPath = keyPath
     }
-    
+
     public func validate() -> Validated {
-        return range.contains(data) ? .valid : .invalid([RangeError.rangeOut("Value: \(data) is out of range \(range)")])
+        if range.contains(value) {
+            return .valid
+        } else {
+            return .invalid(CompositeError(errors: [DetailedError(message: "Value out of range: \(value)", keyPath: keyPath)]))
+        }
     }
 }
- 
