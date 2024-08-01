@@ -24,7 +24,7 @@ public struct LocationMeasurer<F: Filter>: Measurer where F.Item == Location {
     }
     
     public func averageSpeed(of data: [Location], for unit: UnitSpeed = .metersPerSecond) -> Measurement<UnitSpeed> {
-        let locations = filter.filter(of: data)
+        let locations = filter.filter(of: data, for: \.accuracy.speed)
         let speeds = locations.reduce(0) { $0 + $1.speed }
         let value = speeds > 0 ? speeds / Double(locations.count) : 0
         let metersPerSecond = Measurement(value: value, unit: UnitSpeed.metersPerSecond)
