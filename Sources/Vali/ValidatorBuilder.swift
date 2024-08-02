@@ -6,32 +6,32 @@
 //
 
 @resultBuilder
-struct ValidatorBuilder {
-    static func buildBlock() -> some Validator {
+public struct ValidatorBuilder {
+    public static func buildBlock() -> some Validator {
         EmptyValidator()
     }
     
-    static func buildBlock<V: Validator>(_ validator: V) -> V {
+    public static func buildBlock<V: Validator>(_ validator: V) -> V {
         validator
     }
     
-    static func buildBlock<each V>(_ validator: repeat each V) -> TupleValidator<(repeat each V)> where repeat each V: Validator {
+    public static func buildBlock<each V>(_ validator: repeat each V) -> TupleValidator<(repeat each V)> where repeat each V: Validator {
         TupleValidator((repeat each validator))
     }
     
-    static func buildExpression<V: Validator>(_ validator: V) -> V {
+    public static func buildExpression<V: Validator>(_ validator: V) -> V {
         validator
     }
 
-    static func buildEither<T, F>(first validator: T) -> ConditionValidator<T, F> where T: Validator, F: Validator {
+    public static func buildEither<T, F>(first validator: T) -> ConditionValidator<T, F> where T: Validator, F: Validator {
         ConditionValidator(first: validator)
     }
     
-    static func buildOptional<V: Validator>(_ validator: V?) -> V? {
+    public static func buildOptional<V: Validator>(_ validator: V?) -> V? {
         validator
     }
     
-    static func buildEither<T, F>(second validator: F) -> ConditionValidator<T, F> where T: Validator, F: Validator {
+    public static func buildEither<T, F>(second validator: F) -> ConditionValidator<T, F> where T: Validator, F: Validator {
         ConditionValidator(second: validator)
     }
 }

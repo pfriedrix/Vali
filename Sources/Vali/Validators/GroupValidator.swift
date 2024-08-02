@@ -5,14 +5,14 @@
 //  Created by Pfriedrix on 01.05.2024.
 //
 
-struct GroupValidator<V> where V: Validator {
+public struct GroupValidator<V> where V: Validator {
     let validators: [V]
 }
 
 extension GroupValidator: Validator {
-    typealias Body = Never
+    public typealias Body = Never
     
-    func validate() -> Validated {
+    public func validate() -> Validated {
         let errors = validators.flatMap { validator -> [ValidationError] in
             switch validator.validate() {
             case .valid:

@@ -5,8 +5,8 @@
 //  Created by Pfriedrix on 20.03.2024.
 //
 
-struct TupleValidator<V>: Validator {
-    typealias Body = Never
+public struct TupleValidator<V>: Validator {
+    public typealias Body = Never
     
     let validators: V
     
@@ -14,7 +14,7 @@ struct TupleValidator<V>: Validator {
         validators = value
     }
     
-    func validate() -> Validated {
+    public func validate() -> Validated {
         var errors: [ValidationError] = []
 
         for validator in Mirror(reflecting: validators).children.compactMap({ $0.value as? any Validator }) {

@@ -5,7 +5,7 @@
 //  Created by Pfriedrix on 20.03.2024.
 //
 
-struct ConditionValidator<T: Validator, F: Validator>: Validator {
+public struct ConditionValidator<T: Validator, F: Validator>: Validator {
     private let first: T?
     private let second: F?
     
@@ -14,7 +14,7 @@ struct ConditionValidator<T: Validator, F: Validator>: Validator {
         self.second = second
     }
     
-    func validate() -> Validated {
+    public func validate() -> Validated {
         if let first = first {
             return first.validate()
         } else if let second = second {
@@ -23,5 +23,5 @@ struct ConditionValidator<T: Validator, F: Validator>: Validator {
         return .valid
     }
     
-    typealias Body = Never
+    public typealias Body = Never
 }
