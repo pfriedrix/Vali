@@ -4,24 +4,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "Valiloc",
+    name: "Vali",
     platforms: [
         .iOS(.v14),
         .macOS(.v12)
     ],
     products: [
         .library(
-            name: "Valiloc",
-            targets: ["Valiloc"]
+            name: "Vali",
+            targets: ["Vali"]
         )
     ],
     targets: [
         .target(
-            name: "Valiloc"
-        ),
-        .testTarget(
-            name: "ValilocTests",
-            dependencies: ["Valiloc"]
+            name: "Vali"
         )
     ]
 )
